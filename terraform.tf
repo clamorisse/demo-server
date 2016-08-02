@@ -1,3 +1,7 @@
+# ------------------------------------------
+#        AWS CONFIGURATION VARIABLES
+# ------------------------------------------
+
 variable "tf_region" {
   default = "us-east-1"
 }
@@ -6,18 +10,104 @@ provider "aws" {
   region = "${var.tf_region}"
 }
 
-variable "amazon-linux-ami" { 
-  default = "ami-6869aa05"
+# ------------------------------------------------
+#    VARIABLES FOR INFRASTRUCTURE CONFIGURATION
+# ------------------------------------------------
+
+variable "amazon-linux-ami" { }
+variable "vpc_id"           { }
+variable "public_subnet_id" { }
+variable "private_az"       { }
+variable "public_az"        { }
+variable "private_cidr"     { }
+
+
+# ------------------------------------------------
+
+resource "aws_security_group" "web_server_sg" {
+  name        = "web_server_sg"
+  description = "Allows hhtp, https and ssh traffic"
+  vpc_id = "${var.vpc_id}" 
+
+  ingress {
+    from_port = 80 
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 443 
+    to_port   = 443
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+   
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+ }
+
 }
 
+module "nat" {
+  source = "./nat"
+
+  name              = "nat"
+  az                = "${var.public_az}"
+  public_subnet_id  = "${var.public_subnet_id}"
+}
+
+module "private_subnet" {
+  source = "./private-subnet"
+
+  name   = "private_subnet"
+  vpc_id = "${var.vpc_id}"
+#  cidr  = "${var.private_cidr}"
+  az     = "${var.private_az}"
+
+  nat_gateway_id = "${module.nat.nat_gateway_id}"
+}
+
+
 resource "aws_instance" "web_server" {
-  ami = "${var.amazon-linux-ami}"
-  instance_type = "t2.micro"
+  ami                         = "${var.amazon-linux-ami}"
+  instance_type               = "t2.micro"
   associate_public_ip_address = true
-  key_name = "server-key"
+  key_name                    = "server-key"
+  subnet_id                   = "subnet-e73c64cd" # "public_subnet_id"
+  user_data                   = "${file("user_data.txt")}"
+  vpc_security_group_ids      = ["${aws_security_group.web_server_sg.id}"]
+   
   tags {
     Name = "nginx"
   }
+
 }
 
-output "public_ip" { value = "aws_instance.web_server.public_ip" }
+resource "aws_instance" "db_server" {
+  ami                         = "${var.amazon-linux-ami}"
+  instance_type               = "t2.micro"
+  associate_public_ip_address = "false" 
+  key_name                    = "server-key"
+  subnet_id                   = "${module.private_subnet.subnet_id}"
+#  user_data                   = "${file("user_data.txt")}"
+#  vpc_security_group_ids      = ["${aws_security_group.web_server_sg.id}"]
+  
+  tags {
+    Name = "database_server"
+  }
+
+}
+
+output "web_server_public_ip" { value = "${aws_instance.web_server.public_ip}" }
+output "db_server_private_ip" { value = "${aws_instance.db_server.private_ip}" }

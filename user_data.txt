@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo yum install -y nginx
+sudo service nginx restart
+
+cat > /usr/share/nginx/html/index.html << "EOF"
+<html>
+  <head>
+    <title>Frontend NGINX</title>
+  </head>
+  <body>
+    <center><h2>NGINX server</h2></center><br>
+    <center>Status: running</center>
+    <center>by: Berenice V. Cotero</center>
+  </body>
+</html>
+EOF
