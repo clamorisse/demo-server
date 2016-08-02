@@ -24,41 +24,6 @@ variable "private_cidr"     { }
 
 # ------------------------------------------------
 
-resource "aws_security_group" "web_server_sg" {
-  name        = "web_server_sg"
-  description = "Allows hhtp, https and ssh traffic"
-  vpc_id = "${var.vpc_id}" 
-
-  ingress {
-    from_port = 80 
-    to_port   = 80
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = 443 
-    to_port   = 443
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-   
-  egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
- }
-
-}
-
 module "nat" {
   source = "./nat"
 
@@ -78,6 +43,52 @@ module "private_subnet" {
   nat_gateway_id = "${module.nat.nat_gateway_id}"
 }
 
+resource "aws_security_group" "web_server_sg" {
+  name        = "web_server_sg"
+  description = "Allows hhtp, https and ssh traffic"
+  vpc_id = "${var.vpc_id}"
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+ }
+}
+
+resource "aws_security_group" "db_server_sg" {
+  name        = "db_server_sg"
+  description = "Allows hhtp, https and ssh traffic"
+  vpc_id = "${var.vpc_id}" 
+  
+  ingress {
+    from_port = 3306
+    to_port   = 3306
+    protocol  = "tcp"
+    security_groups = ["${aws_security_group.web_server_sg.id}"]
+  }
+}
 
 resource "aws_instance" "web_server" {
   ami                         = "${var.amazon-linux-ami}"
@@ -91,7 +102,6 @@ resource "aws_instance" "web_server" {
   tags {
     Name = "nginx"
   }
-
 }
 
 resource "aws_instance" "db_server" {
@@ -101,7 +111,7 @@ resource "aws_instance" "db_server" {
   key_name                    = "server-key"
   subnet_id                   = "${module.private_subnet.subnet_id}"
 #  user_data                   = "${file("user_data.txt")}"
-#  vpc_security_group_ids      = ["${aws_security_group.web_server_sg.id}"]
+  vpc_security_group_ids      = ["${aws_security_group.db_server_sg.id}"]
   
   tags {
     Name = "database_server"
