@@ -17,15 +17,15 @@ terraform apply
 
 The file ```terraform/terraform.tf``` creates the following resources:
 
-    * 1 Public EC2 instance
+* 1 Public EC2 instance
 
-    * 1 Private EC2 instance
+* 1 Private EC2 instance
 
-    * 1 private subnet
+* 1 private subnet
 
-    * NAT gateway
+* NAT gateway
 
-    * security groups for each instance
+* security groups for each instance
 
 
 ### Back end
