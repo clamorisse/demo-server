@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo yum install -y wget tree lsof nmap ruby20-devel gcc-c++ docker awslogs aws-cli jq
+sudo usermod -a -G docker ec2-user
+sudo service docker start
+mkdir mysql_data
+sleep 10
+sudo docker run --name some-mysql -v mysql_data:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_USER=usuario -e MYSQL_PASSWORD=pass -e MYSQL_DATABASE=login-app -d mysql:5.7
