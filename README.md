@@ -41,8 +41,9 @@ Consists of a EC2 instance listening in ports HTTP, HTTPS and SSH, that runs NGI
 
 Go to:
 
-db_server_private_ip = 172.31.69.168
-web_server_public_ip = 54.86.175.141
+* db_server_private_ip = 172.31.69.168
+
+* web_server_public_ip = 54.86.175.141
 
 
 [index.html](http://54.86.175.141)
