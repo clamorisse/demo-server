@@ -74,7 +74,8 @@ func loginPage(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res.Write([]byte("Hello" + databaseUsername))
+	res.Write([]byte("Hello " + databaseUsername + "!"))
+	res.Write([]byte(" Welcome to the Demo Application!"))
 
 }
 

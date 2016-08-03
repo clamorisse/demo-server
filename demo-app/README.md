@@ -1,4 +1,4 @@
-### Golang demo app with mysql db 
+### Golang demo app with MySQL database 
 
 #### Requires: 
 
