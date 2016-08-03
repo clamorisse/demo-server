@@ -89,7 +89,7 @@ func main() {
   db_name  := os.Getenv("MYSQL_DATABASE")
   db_host  := os.Getenv("MYSQL_HOST")
 
-  access_url := db_user + ":" + db_password + "@tcp(" + db_host + ")/" + db_name
+  access_url := db_user + ":" + db_password + "@tcp(" + db_host + ":3306)/" + db_name
   fmt.Println(access_url)
   db, err = sql.Open("mysql", access_url)
 	if err != nil {
