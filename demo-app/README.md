@@ -11,7 +11,7 @@
 ```
 mkdir migrations
 >>> put sql file here <<<
-export MYSQL_PASSWORD=bookings; export MYSQL_USER=bookings; export MYSQL_DATABASE=bookings; export MYSQL_HOST=127.0.0.1
+export MYSQL_PASSWORD=pass; export MYSQL_USER=usuario; export MYSQL_DATABASE=login-app; export MYSQL_HOST=172.31.69.168
 migrate -url mysql://$MYSQL_USER:$MYSQL_PASSWORD@$MYSQL_HOST/$MYSQL_DATABASE -path ./migrations create migration_signup_example
 migrate -url mysql://$MYSQL_USER:$MYSQL_PASSWORD@$MYSQL_HOST/$MYSQL_DATABASE -path ./migrations up
 ```
