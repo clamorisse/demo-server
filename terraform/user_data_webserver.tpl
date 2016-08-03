@@ -9,7 +9,8 @@ mkdir go || true
 export GOPATH=/home/ec2-user/go
 docker run --rm -v $PWD/demo-app:/usr/src/myapp -v "$GOPATH":/go -w /usr/src/myapp golang:1.6 go get golang.org/x/crypto/bcrypt
 docker run --rm -v $PWD/demo-app:/usr/src/myapp -v "$GOPATH":/go -w /usr/src/myapp golang:1.6 go get -v -u github.com/mattes/migrate
-docker run --rm -v $PWD/demo-app:/usr/src/myapp -v "$GOPATH":/go -w /usr/src/myapp -e MYSQL_PASSWORD=pass -e MYSQL_USER=usuario -e MYSQL_DATABASE=login-app -e MYSQL_HOST=172.31.64.182 golang:1.6 go run signup.go -v
+cd demo-app
+docker run --rm -v $PWD/demo-app:/usr/src/myapp -v "$GOPATH":/go -w /usr/src/myapp -e MYSQL_PASSWORD=pass -e MYSQL_USER=usuario -e MYSQL_DATABASE=login-app -e MYSQL_HOST=${db_host} golang:1.6 go run signup.go -v
 
 
 cat > /usr/share/nginx/html/index.html << "EOF"
