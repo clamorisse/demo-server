@@ -102,8 +102,8 @@ func main() {
 		panic(err.Error())
 	}
 
-	http.HandleFunc("/signup", signupPage)
-	http.HandleFunc("/login", loginPage)
-	http.HandleFunc("/", homePage)
+	http.HandleFunc("/demo-app/signup", signupPage)
+	http.HandleFunc("/demo-app/login", loginPage)
+	http.HandleFunc("/demo-app", homePage)
 	http.ListenAndServe(":8080", nil)
 }
