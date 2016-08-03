@@ -16,10 +16,15 @@ terraform apply
 ## Infrastructure
 
 The file ```terraform/terraform.tf``` creates the following resources:
+
     * 1 Public EC2 instance
+
     * 1 Private EC2 instance
+
     * 1 private subnet
+
     * NAT gateway
+
     * security groups for each instance
 
 
@@ -34,5 +39,7 @@ Consists of a EC2 instance listening in ports HTTP, HTTPS and SSH, that runs NGI
 ## To Play with the Demo
 
 Go to:
-![index.html](http://54.86.175.141)
-![Demo](http://54.86.175.141/demo-app)
+
+[index.html](http://54.86.175.141)
+
+[Demo](http://54.86.175.141/demo-app)

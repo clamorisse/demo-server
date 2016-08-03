@@ -2,9 +2,9 @@
 
 #### Requires: 
 
-* ![golang.org/x/crypto/bcrypt](https://godoc.org/golang.org/x/crypto/bcrypt)
+* [golang.org/x/crypto/bcrypt](https://godoc.org/golang.org/x/crypto/bcrypt)
 
-* ![github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
+* [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
 
 ### How To Run 
 
