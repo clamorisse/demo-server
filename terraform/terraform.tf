@@ -19,7 +19,7 @@ variable "vpc_id"           { }
 variable "public_subnet_id" { }
 variable "private_az"       { }
 variable "public_az"        { }
-variable "private_cidr"     { }
+variable "private_cidr"     { default = "172.31.64.0/20" }
 
 
 # ------------------------------------------------
@@ -37,7 +37,7 @@ module "private_subnet" {
 
   name   = "private_subnet"
   vpc_id = "${var.vpc_id}"
-#  cidr  = "${var.private_cidr}"
+  cidr  = "${var.private_cidr}"
   az     = "${var.private_az}"
 
   nat_gateway_id = "${module.nat.nat_gateway_id}"

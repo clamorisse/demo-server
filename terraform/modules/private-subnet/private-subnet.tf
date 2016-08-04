@@ -5,13 +5,13 @@
 
 variable "name"           { default = "private_subnet"}
 variable "vpc_id"         { }
-# variable "cidr"           { }
+variable "cidr"           { }
 variable "az"             { }
 variable "nat_gateway_id" { }
 
 resource "aws_subnet" "private" {
   vpc_id            = "${var.vpc_id}"
-  cidr_block        = "172.31.64.0/20"
+  cidr_block        = "${var.cidr}" 
   availability_zone = "${var.az}"
 
   tags      { Name = "${var.name}.${var.az}" }
