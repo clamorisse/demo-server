@@ -10,6 +10,11 @@ This application application requires:
 * Terraform  v0.6.16 or newer
 * AWS account and aws profile configured with the keys
 * An ec2 key-pair created in advance
+* Enter proper variables in `~/challenge-fc/terraform/terraform.tfvars` file:
+    
+    * default `vpc_id`
+    * default `public_subnet_id`
+    * assign a CIDR block `private_cidr` for private subnet. 
 
 ## How it works
 
