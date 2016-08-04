@@ -19,7 +19,7 @@ variable "vpc_id"           { }
 variable "public_subnet_id" { }
 variable "private_az"       { }
 variable "public_az"        { }
-variable "private_cidr"     { default = "172.31.64.0/20" }
+variable "private_cidr"     { }
 
 
 # ------------------------------------------------
