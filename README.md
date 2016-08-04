@@ -5,7 +5,7 @@ This a simple web-service in Go to demo data persistence in MySQL.
 
 ## Requirements
 
-This application application requires:
+This application requires:
 
 * Terraform  v0.6.16 or newer
 * AWS account and aws profile configured with the keys
