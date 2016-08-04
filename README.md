@@ -23,8 +23,8 @@ The application deployment is fully automated. Run `terraform plan` and then `te
 After completion, terraform will output the ip address for the web server. Open url http://webserver-ip/demo-app in the browser. 
 
 ## TODO
-Add load balancing.
-Provision key pair with terraform.
-Enable logging in the app. 
-Get DB parameters via service discovery.
+* Add load balancing.
+* Provision key pair with terraform.
+* Enable logging in the app. 
+* Get DB parameters via service discovery.
 
