@@ -37,7 +37,7 @@ module "private_subnet" {
 
   name   = "private_subnet"
   vpc_id = "${var.vpc_id}"
-#  cidr  = "${var.private_cidr}"
+  cidr  = "${var.private_cidr}"
   az     = "${var.private_az}"
 
   nat_gateway_id = "${module.nat.nat_gateway_id}"

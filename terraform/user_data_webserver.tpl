@@ -89,6 +89,15 @@ docker run --rm -v $APP_DIR:/usr/src/myapp \
   -w /usr/src/myapp \
   golang:1.6 go get -v -u github.com/mattes/migrate
 
+# Checking connection to database
+nc -z -w1 ${db_host} 3306
+while [ $? -ne 0 ]
+do
+  echo "Waiting for database..."
+  nc -z -w1 ${db_host} 3306
+done
+echo "OMG DB is finally up!"
+
 # Run db migrations
 export MYSQL_PASSWORD=pass
 export MYSQL_USER=usuario

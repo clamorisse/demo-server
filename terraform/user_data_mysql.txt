@@ -1,5 +1,14 @@
 #!/bin/bash
 
+wget -q --spider http://google.com
+
+while [ $? -ne 0 ]
+do
+  echo "Waiting for internet connectivity"
+  wget -q --spider http://google.com
+done
+echo "internet is up"
+
 sudo yum install -y wget tree lsof nmap ruby20-devel gcc-c++ docker awslogs aws-cli jq
 sudo usermod -a -G docker ec2-user
 sudo service docker start
