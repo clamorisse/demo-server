@@ -1,51 +1,30 @@
-# Challenge-fc
+# Golang demo app with MySQL database 
 
-This repository creates AWS infrastructure necessary to run a simple golang application.
-The creation of infrastructure and deployment of application, are automated using a terraform plan.
-
-## How to use?
-
-To deploy in AWS, you need to have created a default profile to run Terraform tf files.
-In terraform directory
-
-```
-terraform plan
-terraform apply
-```
-At the end terraform will output the public IP of the web-server and the private IP of the db-server.
-
-## Infrastructure
-
-The file ```terraform/terraform.tf``` creates the following resources:
-
-* 1 Public EC2 instance
-
-* 1 Private EC2 instance
-
-* 1 private subnet
-
-* NAT gateway
-
-* security groups for each instance
+This a simple web-service in Go to demo data persistence in MySQL.
 
 
-### Back end
+## Requirements
 
-A private EC2 instance sitting on a private subnet and is configured at creation using the file ```user_data_mysql``` that installs docker, configures it and runs a container with MySQL database. 
+This application application requires:
 
-### Front end
+* Terraform  v0.6.16 or newer
+* AWS account and aws profile configured with the keys
+* An ec2 key-pair created in advance
 
-Consists of a EC2 instance listening in ports HTTP, HTTPS and SSH, that runs NGINX web-server used as a reverse proxy for the Demo application. Also, uses docker to create all the dependencies of Go needed to run the Demo and the Demo itself runs in a docker container. This instance is configured using the file ```user_data_webserver.tpl``` and it has a dependancy on the backend instance.
+## How it works
 
-## To Play with the Demo
+Terraform provisions servers and installs required services via user-data. MySQL database runs in a container, as well as Go application.
 
-Go to:
+A NGINX web server is used as a reverse proxy for the application.
 
-* db_server_private_ip = 172.31.69.168
+## How to run
 
-* web_server_public_ip = 54.86.175.141
+The application deployment is fully automated. Run `terraform plan` and then `terraform apply` from terraform folder. 
+After completion, terraform will output the ip address for the web server. Open url http://webserver-ip/demo-app in the browser. 
 
+## TODO
+Add load balancing.
+Provision key pair with terraform.
+Enable logging in the app. 
+Get DB parameters via service discovery.
 
-[index.html](http://54.86.175.141)
-
-[Demo](http://54.86.175.141/demo-app)
