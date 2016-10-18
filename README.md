@@ -17,7 +17,9 @@ This application requires:
 Terraform provisions servers and installs required services via user-data. MySQL database runs in a container, as well as Go application.
 
 A NGINX web server is used as a reverse proxy for the application and to redirect all http requests to https, it runs in a container and creates SSL certificates.
+
 To check the container image in [Dockerhub: clamorisse/nginx-ssl-container](https://hub.docker.com/r/clamorisse/nginx-ssl-container/)
+
 To check container repository in [GIthub: clamorisse/nginx-ssl-container](https://github.com/clamorisse/nginx-ssl-container)
 
 ## How to run
