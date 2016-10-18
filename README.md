@@ -1,6 +1,6 @@
 # Golang demo app with MySQL database 
 
-This a simple web-service in Go to demo data persistence in MySQL. NGINX is used to redirect all requests to https. The servers are in a autoscaling group and attached to a load balacer.ii
+This is a simple web-service in Go to demo data persistence in MySQL. NGINX is used to redirect all requests to https. The servers are in an autoscaling group and attached to a load balacer.ii
 
 
 ## Requirements
