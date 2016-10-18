@@ -25,17 +25,15 @@ cat > /usr/share/nginx/html/index.html << EOF
     <title>Frontend NGINX</title>
   </head>
   <body>
-    <center><h2>NGINX server</h2></center><br>
+    <center><h1>Welcome to the Demo application</h1></center><br>
     
-    <script language="javascript">
-    var x, message;
-    x = $PRIV_IP;
-    message = "EC2 private IP";
-    document.write (message); // prints the value of the message variable
-    document.write (x); //prints the value of x
-    </script>
+    <center><h3>This application uses NGINX to redirect all requests to HTTPS</h3></center><br>
+    <center><h3>NGINX runs in a container, check the <a href="https://hub.docker.com/r/clamorisse/nginx-ssl-container/">image</a>.</h3></center><br>
+    <center><h3>The application itself runs in a container</h3></center><br>
+    <center><h3>that communicates to a DB MySQL, also runing in a container.</h3></center><br>
+    <center><h3><a href="http://redirect.cotero.org/demo-app">START</a></h3></center><br>
     
-    <center>Status: running</center>
+    <center>NGINX Status: running</center>
     <center>by: Berenice V. Cotero</center>
   </body>
 </html>
