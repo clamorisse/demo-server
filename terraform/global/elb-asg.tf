@@ -52,13 +52,13 @@ resource "aws_autoscaling_group" "main_asg" {
   launch_configuration = "${aws_launch_configuration.launch_config.id}"
 
   max_size = "2"
-  min_size = "1"
+  min_size = "2"
   desired_capacity = "2"
 
-  health_check_grace_period = "180"
-  health_check_type = "EC2"
+  health_check_grace_period = "300"
+  health_check_type = "ELB"
 
   load_balancers = ["${aws_elb.elb.name}"]
 }
 
-output "elb" { value = "${aws_elb.elb.public_dns}" }
+output "elb" { value = "${aws_elb.elb.dns_name}" }

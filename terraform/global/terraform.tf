@@ -180,6 +180,7 @@ resource "template_file" "webserver_userdata" {
   template = "${file("user_data_webserver.tpl")}"
   vars {
     db_host = "${aws_instance.db_server.private_ip}"
+    elb_dns = "${aws_elb.elb.dns_name}"
   }
 }
 

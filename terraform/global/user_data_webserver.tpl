@@ -1,81 +1,49 @@
 #!/bin/bash
 
-export GOPATH=/home/ec2-user/go
-export APP_DIR=/home/ec2-user/demo-app
+export GOPATH=/go
+export APP_DIR=/challenge-fc/demo-app
+export ELB_DNS=${elb_dns}
+export PRIV_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+echo $PRIV_IP
 
-sudo yum install -y nginx docker
+sudo yum install -y nginx docker git
 sudo usermod -a -G docker ec2-user
 sudo service docker restart
+sudo git clone https://github.com/clamorisse/challenge-fc.git
 
-# Config file for nginx
+# Config nginx server
 
-cat > /etc/nginx/nginx.conf << "EOF"
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /var/run/nginx.pid;
+#req -> elb:80 -> ec2:80 -> nginx -> /demo-app -> 8080
 
-events {
-    worker_connections 1024;
-}
-
-http {
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile            on;
-    tcp_nopush          on;
-    tcp_nodelay         on;
-    keepalive_timeout   65;
-    types_hash_max_size 2048;
-
-    include             /etc/nginx/mime.types;
-    default_type        application/octet-stream;
-
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
-    # See http://nginx.org/en/docs/ngx_core_module.html#include
-    # for more information.
-    include /etc/nginx/conf.d/*.conf;
-
-    index   index.html index.htm;
-
-    server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
-        server_name  localhost;
-        root         /usr/share/nginx/html;
-
-        # Load configuration files for the default server block.
-        include /etc/nginx/default.d/*.conf;
-
-        location / {
-        }
-
-        location /demo-app {
-            proxy_pass http://localhost:8080;
-        }
-    }
-}
-EOF
-
-sudo service nginx restart
+#sudo service nginx restart
 
 # Simple home page
-cat > /usr/share/nginx/html/index.html << "EOF"
+
+cat > /usr/share/nginx/html/index.html << EOF
 <html>
   <head>
     <title>Frontend NGINX</title>
   </head>
   <body>
     <center><h2>NGINX server</h2></center><br>
+    
+    <script language="javascript">
+    var x, message;
+    x = $PRIV_IP;
+    message = "EC2 private IP";
+    document.write (message); // prints the value of the message variable
+    document.write (x); //prints the value of x
+    </script>
+    
     <center>Status: running</center>
     <center>by: Berenice V. Cotero</center>
   </body>
 </html>
 EOF
+
+docker run -it -d -p 80:80 -p 443:443 -v /usr/share/nginx/html/index.html:/usr/share/nginx/html/index.html clamorisse/nginx-ssl-container
+docker ps -a
+
 
 mkdir go || true
 
@@ -103,12 +71,21 @@ export MYSQL_PASSWORD=pass
 export MYSQL_USER=usuario
 export MYSQL_DATABASE=login-app
 export MYSQL_HOST=${db_host}
-docker run --rm -v $APP_DIR:/usr/src/myapp \
+
+ls -la $APP_DIR
+
+docker run --name=DBmigration -v $APP_DIR:/usr/src/myapp \
   -v "$GOPATH":/go \
   -w /usr/src/myapp  \
   golang:1.6 migrate \
   -url mysql://$MYSQL_USER:$MYSQL_PASSWORD@tcp\($MYSQL_HOST:3306\)/$MYSQL_DATABASE \
   -path migrations up
+
+docker logs DBmigration
+
+echo "migrations are up!"
+echo
+echo "starting app"
 
 # Run the app
 docker run --rm -v $APP_DIR:/usr/src/myapp \
@@ -121,3 +98,4 @@ docker run --rm -v $APP_DIR:/usr/src/myapp \
   -w /usr/src/myapp \
   golang:1.6 go run signup.go -v
 
+echo "consumatum est..."
