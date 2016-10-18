@@ -41,9 +41,8 @@ cat > /usr/share/nginx/html/index.html << EOF
 </html>
 EOF
 
-docker run -it -d -p 80:80 -p 443:443 -v /usr/share/nginx/html/index.html:/usr/share/nginx/html/index.html clamorisse/nginx-ssl-container
+docker run --net=host -d -p 80:80 -p 443:443 -v /usr/share/nginx/html/index.html:/usr/share/nginx/html/index.html clamorisse/nginx-ssl-container
 docker ps -a
-
 
 mkdir go || true
 
@@ -88,7 +87,7 @@ echo
 echo "starting app"
 
 # Run the app
-docker run --rm -v $APP_DIR:/usr/src/myapp \
+docker run --net=host --rm -v $APP_DIR:/usr/src/myapp \
   -v "$GOPATH":/go \
   -e MYSQL_PASSWORD=pass \
   -e MYSQL_USER=usuario \

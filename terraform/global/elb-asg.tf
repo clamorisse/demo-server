@@ -32,7 +32,7 @@ resource "aws_elb" "elb" {
 resource "aws_launch_configuration" "launch_config" {
   name = "web-lc"
   image_id = "${var.amazon-linux-ami}"
-  instance_type = "t2.large"
+  instance_type = "t2.micro"
   key_name = "${var.key-name}"
   security_groups = ["${aws_security_group.web_server_sg.id}"]
   user_data = "${template_file.webserver_userdata.rendered}"
@@ -51,7 +51,7 @@ resource "aws_autoscaling_group" "main_asg" {
   # Uses the ID from the launch config created above
   launch_configuration = "${aws_launch_configuration.launch_config.id}"
 
-  max_size = "2"
+  max_size = "4"
   min_size = "2"
   desired_capacity = "2"
 

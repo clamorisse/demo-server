@@ -164,7 +164,7 @@ resource "aws_security_group" "db_server_sg" {
 
 resource "aws_instance" "db_server" {
   ami                         = "${var.amazon-linux-ami}"
-  instance_type               = "t2.large"
+  instance_type               = "t2.micro"
   associate_public_ip_address = "false" 
   key_name                    = "${var.key-name}"
   subnet_id                   = "${module.private_subnet.subnet_id}"
