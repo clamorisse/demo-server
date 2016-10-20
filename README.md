@@ -32,4 +32,7 @@ Open url http://redirect.cotero.org in the browser.
 * Provision key pair with terraform.
 * Enable logging in the app. 
 * Get DB parameters via service discovery.
+* Continuous integration with CircleCi
+* AWS Spec test
+* Add docker compose for NGINX and APP containers 
 
