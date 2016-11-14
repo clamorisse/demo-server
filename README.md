@@ -28,6 +28,9 @@ The application deployment is fully automated. Run `terraform plan` and then `te
 After completion, terraform will output the ip address for the MySQL server and ELB endpoint.
 Open url http://redirect.cotero.org in the browser. 
 
+### NOTE
+The http://redirect.cotero.org is down and all the infrastructure that supports it. If you want to deploy this repository adjust NGINX file with a new url address. 
+
 ## TODO
 * Provision key pair with terraform.
 * Enable logging in the app. 
