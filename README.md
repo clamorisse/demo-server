@@ -29,7 +29,7 @@ After completion, terraform will output the ip address for the MySQL server and 
 Open url http://redirect.cotero.org in the browser. 
 
 ### NOTE
-The http://redirect.cotero.org is down and all the infrastructure that supports it. If you want to deploy this repository adjust NGINX file with a new url address. 
+The http://redirect.cotero.org is down and all the infrastructure that supports it. If you want to deploy this repository adjust NGINX config files with a new url address. These new config files will have to be mapped when the NGINX container is run in the server in the file: ```demo-server/terraform/global/user_data_webserver.tpl```
 
 ## TODO
 * Provision key pair with terraform.
